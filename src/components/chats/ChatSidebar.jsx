@@ -44,15 +44,6 @@ const ChatSidebar = ({ className }) => {
 
   const conversations = data?.pages.flatMap((page) => page.conversations) || [];
 
-  if (status === "success" && !conversations.length && !hasNextPage)
-    return (
-      <div className="p-5 flex items-center justify-center">
-        <span className="text-center text-destructive">
-          Không có thông báo nào.
-        </span>
-      </div>
-    );
-
   return (
     <div className={cn(className)}>
       {/* Header chat */}

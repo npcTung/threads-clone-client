@@ -3,7 +3,7 @@ import * as apis from "@/apis";
 export const sendMessage = async (data) => {
   const { recipientId, ...payload } = data;
   const response = await apis.sendMessage(recipientId, payload);
-  return response.data;
+  return response;
 };
 
 export const getIpAddress = async () => {
