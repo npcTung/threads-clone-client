@@ -36,3 +36,5 @@ export * from "./popover";
 export * from "./switch";
 // skeleton
 export * from "./skeleton";
+// command
+export * from "./command";

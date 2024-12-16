@@ -32,7 +32,7 @@ const Chats = Loadable(lazy(() => import("@/pages/home/Chats")));
 const Router = () => {
   return useRoutes([
     {
-      path: path.AUTH,
+      path: path.HOME + path.AUTH,
       element: <Auth />,
       children: [
         { path: path.LOGIN, element: <Login /> },

@@ -40,7 +40,7 @@ const MenuBar = ({ className, setShowCreatePost }) => {
         asChild
         onClick={() => conversation && setConversation(null)}
       >
-        <Link to={`/${path.SEARCH}`}>
+        <Link to={path.HOME + path.SEARCH}>
           <Search
             className={cn(
               "opacity-50 hover:opacity-100 transition-all",
@@ -68,7 +68,7 @@ const MenuBar = ({ className, setShowCreatePost }) => {
         asChild
         onClick={() => conversation && setConversation(null)}
       >
-        <Link to={`/${currentData?.userName}`}>
+        <Link to={path.HOME + currentData?.userName}>
           <UserIcon
             className={cn(
               "opacity-50 hover:opacity-100 transition-all",

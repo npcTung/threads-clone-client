@@ -127,7 +127,7 @@ const LoginForm = () => {
           />
           <div className="w-full flex items-center justify-end">
             <Link
-              to={`/${path.AUTH}/${path.FORGOT_PASSWORD}`}
+              to={`${path.HOME}${path.AUTH}/${path.FORGOT_PASSWORD}`}
               className="hover:underline text-sm"
             >
               Quên mật khẩu?

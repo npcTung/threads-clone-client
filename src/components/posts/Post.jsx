@@ -70,7 +70,7 @@ const Post = ({ className, data }) => {
       >
         <div className="flex gap-3 w-full">
           <div className="flex flex-col items-center">
-            <Link to={`/${data?.postedBy?.userName}`}>
+            <Link to={path.HOME + data?.postedBy?.userName}>
               <UserAvatar
                 avatarUrl={data?.postedBy?.avatarUrl}
                 displayName={data?.postedBy?.displayName}
@@ -83,7 +83,7 @@ const Post = ({ className, data }) => {
                 <div className="flex w-full items-center">
                   <UserTooltip user={data?.postedBy}>
                     <Link
-                      to={`/${data?.postedBy?.userName}`}
+                      to={path.HOME + data?.postedBy?.userName}
                       className="text-sm font-medium hover:underline"
                     >
                       {data?.postedBy?.userName}
@@ -94,7 +94,7 @@ const Post = ({ className, data }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          to={`/${path.POSTS}/${data?._id}`}
+                          to={`${path.HOME}${path.POSTS}/${data?._id}`}
                           className="opacity-50"
                         >
                           <small>{formatRelativeDate(data?.createdAt)}</small>
@@ -122,7 +122,10 @@ const Post = ({ className, data }) => {
                   )}
                 />
               </div>
-              <Link to={`/${path.POSTS}/${data?._id}`} className="text-sm">
+              <Link
+                to={`${path.HOME}${path.POSTS}/${data?._id}`}
+                className="text-sm"
+              >
                 {data?.context}
               </Link>
 

@@ -75,28 +75,28 @@ const ActivityPrewiew = ({ data }) => {
     Follow: {
       message: `${data.isSuerId.displayName} đã theo dõi bạn.`,
       icon: <User2 className="size-9 p-1 rounded-full bg-muted text-primary" />,
-      herf: `/${data.isSuerId.userName}`,
+      herf: path.HOME + data.isSuerId.userName,
     },
     Like: {
       message: `${data.isSuerId.displayName} thích bài viết của bạn.`,
       icon: (
         <Heart className="size-9 p-1 rounded-full bg-muted text-red-500 fill-red-500" />
       ),
-      herf: `/${path.POSTS}/${data?.postId?._id}`,
+      herf: `${path.HOME}${path.POSTS}/${data?.postId?._id}`,
     },
     Comment: {
       message: `${data.isSuerId.displayName} đã bình luận về bài đăng của bạn.`,
       icon: (
         <MessageSquare className="size-9 p-1 rounded-full bg-muted text-primary" />
       ),
-      herf: `/${path.POSTS}/${data?.postId?._id}`,
+      herf: `${path.HOME}${path.POSTS}/${data?.postId?._id}`,
     },
     Like_Comment: {
       message: `${data.isSuerId.displayName} thích bình luận của bạn trong bài viết mà bạn đã bình luận.`,
       icon: (
         <Heart className="size-9 p-1 rounded-full bg-muted text-red-500 fill-red-500" />
       ),
-      herf: `/${path.POSTS}/${data?.postId?._id}`,
+      herf: `${path.HOME}${path.POSTS}/${data?.postId?._id}`,
     },
   };
 
@@ -111,7 +111,7 @@ const ActivityPrewiew = ({ data }) => {
             <div className="flex gap-1">
               <UserTooltip user={data.isSuerId}>
                 <Link
-                  to={`/${data.isSuerId.userName}`}
+                  to={path.HOME + data.isSuerId.userName}
                   className="font-medium hover:underline"
                 >{`${data.isSuerId.displayName}:`}</Link>
               </UserTooltip>

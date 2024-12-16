@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -7,6 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
   ScrollArea,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "./ui";
 import icons from "@/lib/icons";
 import { InfiniteScrollContainer, UserAvatar, useTheme } from ".";
@@ -22,38 +27,53 @@ import path from "@/lib/path";
 
 const { ChevronRight, ArrowLeft, Trash2, Sun, Moon, LoaderCircle, Dot } = icons;
 
+const valueTitle = (title) => {
+  switch (title) {
+    case "block_user":
+      return "Danh sách tài khoản bị chặn";
+    case "dark":
+      return "Đổi chế độ: Tối";
+    case "ligth":
+      return "Đổi chế độ: Sáng";
+    case "history":
+      return "Nhật ký hoạt động";
+
+    default:
+      return "Cài đặt";
+  }
+};
+
 const DialogSetting = ({ open, onOpenChange }) => {
   const [title, setTitle] = useState("setting");
+  const [dateActives, setDateActives] = useState([]);
+  const [dateActive, setDateActive] = useState(null);
 
-  const valueTitle = () => {
-    switch (title) {
-      case "block_user":
-        return "Danh sách tài khoản bị chặn";
-      case "dark":
-        return "Đổi chế độ: Tối";
-      case "ligth":
-        return "Đổi chế độ: Sáng";
-      case "history":
-        return "Nhật ký hoạt động";
-
-      default:
-        return "Cài đặt";
-    }
-  };
+  useEffect(() => {
+    if (dateActives.length) setDateActive(dateActives[0]);
+  }, [dateActives]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-sm:max-w-none max-sm:size-full">
         <DialogHeader>
-          <DialogTitle className="flex items-center space-x-1">
-            <ArrowLeft
-              className={cn(
-                "size-5 cursor-pointer",
-                title === "setting" && "hidden"
-              )}
-              onClick={() => setTitle("setting")}
-            />
-            <span>{valueTitle()}</span>
+          <DialogTitle className="flex items-center justify-between">
+            <div className="flex items-center space-x-1">
+              <ArrowLeft
+                className={cn(
+                  "size-5 cursor-pointer",
+                  title === "setting" && "hidden"
+                )}
+                onClick={() => setTitle("setting")}
+              />
+              <span>{valueTitle(title)}</span>
+            </div>
+            <div className={cn(title !== "history" && "hidden")}>
+              <SelectOption
+                data={dateActives}
+                setDateActive={setDateActive}
+                dateActive={dateActive}
+              />
+            </div>
           </DialogTitle>
           <DialogDescription />
         </DialogHeader>
@@ -73,6 +93,8 @@ const DialogSetting = ({ open, onOpenChange }) => {
               title !== "history" && "hidden"
             )}
             onOpenChange={onOpenChange}
+            setDateActives={setDateActives}
+            dateActive={dateActive}
           />
         </div>
       </DialogContent>
@@ -202,7 +224,12 @@ const getActivityLogs = async (cursor) => {
     };
 };
 
-const HistoryLog = ({ className, onOpenChange }) => {
+const HistoryLog = ({
+  className,
+  onOpenChange,
+  setDateActives,
+  dateActive,
+}) => {
   const {
     data,
     fetchNextPage,
@@ -219,29 +246,29 @@ const HistoryLog = ({ className, onOpenChange }) => {
   });
 
   const activityLogs = data?.pages.flatMap((page) => page?.activityLogs) || [];
-
   const navigate = useNavigate();
 
   const onClickLink = (activityLog) => {
     navigate(
       activityLog.type !== "Follow"
-        ? `/${path.POSTS}/${activityLog.postId._id}`
-        : `/${activityLog.userId._id}`
+        ? `${path.HOME}${path.POSTS}/${activityLog.postId._id}`
+        : path.HOME + activityLog.userId._id
     );
     onOpenChange(false);
   };
 
-  const groupPostsByDate = () => {
-    return activityLogs.reduce((acc, activityLog) => {
-      const date = formatDate(activityLog.createdAt, "yyy-MM-dd");
+  const groupPostsByDate = activityLogs.reduce((acc, activityLog) => {
+    const date = formatDate(activityLog.createdAt, "yyy-MM-dd");
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(activityLog);
+    return acc;
+  }, {});
 
-      if (!acc[date]) acc[date] = [];
-
-      acc[date].push(activityLog);
-
-      return acc;
-    }, {});
-  };
+  useEffect(() => {
+    const dateArr = [];
+    for (let date in groupPostsByDate) dateArr.push(date);
+    setDateActives([...new Set(dateArr)]);
+  }, [status]);
 
   return (
     <div className={cn(className)}>
@@ -267,70 +294,95 @@ const HistoryLog = ({ className, onOpenChange }) => {
           onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
           className="space-y-2 h-full"
         >
-          {(() => {
-            for (let date in groupPostsByDate()) {
-              return groupPostsByDate()[date].map((activityLog, idx) => (
-                <div key={activityLog._id}>
-                  {idx === 0 && (
-                    <span className="text-sm font-bold">
-                      {formatDate(date, "d MMMM, yyyy", {
-                        locale: vi,
-                      })}
-                    </span>
-                  )}
-                  <div
-                    onClick={() => onClickLink(activityLog)}
-                    className="p-2 bg-muted flex items-end justify-between cursor-pointer"
-                  >
-                    <div className="flex items-center space-x-2">
-                      <UserAvatar
-                        avatarUrl={activityLog.postId.fileUrls[0]?.url}
-                        displayName={activityLog.postId.filenames[0]}
-                        className={"border border-muted-foreground size-[60px]"}
-                      />
-                      <div className="flex flex-col">
-                        <div className="flex items-center space-x-1 text-sm whitespace-nowrap">
-                          <span className="font-bold">
-                            {activityLog.userId.displayName}
-                          </span>
-                          <span>
-                            {activityLog.type === "Like" && "thích bài viết"}
-                            {activityLog.type === "Post" && "tạo bài viết mới"}
-                            {activityLog.type === "Like_Comment" &&
-                              "thích bình luận"}
-                            {activityLog.type === "Comment" && "bình luận"}
-                            {activityLog.type === "Follow" && "theo dõi"}
-                          </span>
-                          <span className="font-bold">của</span>
-                          <span className="text-sm">
-                            {activityLog.postId.postedBy._id ===
-                            activityLog.userId._id
-                              ? "bạn"
-                              : activityLog.postId.postedBy.displayName}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-sm">
-                          <span>{activityLog.postId.context}</span>
-                          {activityLog.commentId && (
-                            <>
-                              <Dot className="size-5" />
-                              <span>{activityLog.commentId.context}</span>
-                            </>
+          {dateActive &&
+            groupPostsByDate[dateActive].map((activityLog, idx) => (
+              <div key={activityLog._id}>
+                {idx === 0 && (
+                  <span className="text-sm font-bold">
+                    {formatDate(dateActive, "d MMMM, yyyy", { locale: vi })}
+                  </span>
+                )}
+                <div
+                  onClick={() => onClickLink(activityLog)}
+                  className="p-2 bg-muted flex items-end justify-between cursor-pointer"
+                >
+                  <div className="flex items-center space-x-2">
+                    <UserAvatar
+                      avatarUrl={activityLog.postId.fileUrls[0]?.url}
+                      displayName={activityLog.postId.filenames[0]}
+                      className={"border border-muted-foreground size-[60px]"}
+                    />
+                    <div className="flex flex-col">
+                      <div className="flex items-center space-x-1 text-sm whitespace-nowrap">
+                        <span className="font-bold">
+                          {activityLog.userId.displayName}
+                        </span>
+                        <span>
+                          {activityLog.type === "Like" && "thích bài viết"}
+                          {activityLog.type === "Post" && "tạo bài viết mới"}
+                          {activityLog.type === "Like_Comment" &&
+                            "thích bình luận"}
+                          {activityLog.type === "Comment" &&
+                            "bình luận vào bài viết"}
+                          {activityLog.type === "Follow" && "theo dõi"}
+                        </span>
+                        <span
+                          className={cn(
+                            "font-bold",
+                            activityLog.type === "Post" && "hidden"
                           )}
-                        </div>
+                        >
+                          của
+                        </span>
+                        <span
+                          className={cn(
+                            "text-sm",
+                            activityLog.type === "Post" && "hidden"
+                          )}
+                        >
+                          {activityLog.postId.postedBy._id ===
+                          activityLog.userId._id
+                            ? "bạn"
+                            : activityLog.postId.postedBy.displayName}
+                        </span>
+                      </div>
+                      <div className="flex items-center text-sm">
+                        <span>{activityLog.postId.context}</span>
+                        {activityLog.commentId && (
+                          <>
+                            <Dot className="size-5" />
+                            <span>{activityLog.commentId.context}</span>
+                          </>
+                        )}
                       </div>
                     </div>
-                    <small>{formatDate(activityLog.createdAt, "HH:mm")}</small>
                   </div>
+                  <small>{formatDate(activityLog.createdAt, "HH:mm")}</small>
                 </div>
-              ));
-            }
-          })()}
+              </div>
+            ))}
           {isFetchingNextPage && (
             <LoaderCircle className="size-5 animate-spin" />
           )}
         </InfiniteScrollContainer>
       </ScrollArea>
     </div>
+  );
+};
+
+const SelectOption = ({ data, setDateActive, dateActive }) => {
+  return (
+    <Select onValueChange={(value) => setDateActive(value)} value={dateActive}>
+      <SelectTrigger className="max-w-[200px] px-2">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {data.map((date, idx) => (
+          <SelectItem key={idx} value={date}>
+            {formatDate(date, "d MMMM, yyyy", { locale: vi })}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 };

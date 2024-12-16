@@ -10,10 +10,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   InfiniteScrollContainer,
   LoadingButton,
   LoadingScreen,
@@ -153,7 +149,13 @@ const Comment = ({ data }) => {
                   </TooltipProvider>
                 </div>
                 {data.userId._id === currentData._id && (
-                  <DropComment setShowDeletecomment={setShowDeteteComment} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setShowDeteteComment(true)}
+                  >
+                    <Trash2 className="size-5" />
+                  </Button>
                 )}
               </div>
               <div className="flex items-center justify-between">
@@ -176,25 +178,6 @@ const Comment = ({ data }) => {
         </div>
       </div>
     </>
-  );
-};
-
-const DropComment = ({ setShowDeletecomment }) => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Ellipsis className="cursor-pointer size-7 p-1 rounded-full hover:bg-muted" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent side="rigth" align="start">
-        <DropdownMenuItem
-          className="flex items-center justify-between gap-5 cursor-pointer text-red-600"
-          onClick={setShowDeletecomment}
-        >
-          <span>Xóa</span>
-          <Trash2 className="size-5" />
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 };
 

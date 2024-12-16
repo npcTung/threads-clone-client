@@ -18,11 +18,11 @@ const Auth = () => {
   }, [isLoggedIn]);
 
   let titleObj;
-  if (window.location.pathname.split("/")[2] === "login")
+  if (window.location.pathname.split("/")[3] === "login")
     titleObj = "Đăng nhập";
-  else if (window.location.pathname.split("/")[2] === "register")
+  else if (window.location.pathname.split("/")[3] === "register")
     titleObj = "Đăng ký";
-  else if (window.location.pathname.split("/")[2] === "forgot_password")
+  else if (window.location.pathname.split("/")[3] === "forgot_password")
     titleObj = "Quên mật khẩu";
   else titleObj = "Trang chủ";
 

@@ -69,7 +69,7 @@ const ForgotPassword = () => {
                 Vui lòng nhập email vào đây để tiến hành quên mật khẩu.
               </span>
               <Link
-                to={`/${path.AUTH}/${path.LOGIN}`}
+                to={`${path.HOME}${path.AUTH}/${path.LOGIN}`}
                 title="Quay về trang đăng nhập"
                 className="absolute top-0 left-0 cursor-pointer p-2 border rounded-full hover:bg-muted"
               >

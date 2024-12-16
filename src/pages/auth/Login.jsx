@@ -21,7 +21,7 @@ const Login = () => {
             <div className="flex items-center justify-center gap-1">
               <span>Bạn chưa có tài khoản?</span>
               <Link
-                to={`/${path.AUTH}/${path.REGISTER}`}
+                to={`${path.HOME}${path.AUTH}/${path.REGISTER}`}
                 className="text-blue-700 transition-all hover:underline"
               >
                 Đăng ký

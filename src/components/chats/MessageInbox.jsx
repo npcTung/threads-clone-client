@@ -197,7 +197,7 @@ const HeaderInbox = ({ className, data }) => {
       />
       <div className="flex items-center space-x-3">
         <div
-          className="cursor-pointer opacity-50 hover:opacity-100 transition-all"
+          className="block xl:hidden lg:hidden cursor-pointer opacity-50 hover:opacity-100 transition-all"
           onClick={() => setConversation(null)}
         >
           <ArrowLeft className="size-5" />

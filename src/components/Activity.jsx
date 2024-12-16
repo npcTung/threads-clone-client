@@ -54,7 +54,7 @@ const Activity = ({ pathName }) => {
       className="flex items-center justify-start"
       asChild
     >
-      <Link to={`/${path.ACTIVITY}`}>
+      <Link to={path.HOME + path.ACTIVITY}>
         <div
           className="relative"
           onClick={() => {

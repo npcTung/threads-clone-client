@@ -9,7 +9,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -21,7 +20,7 @@
     "@hookform/resolvers": "3.9.0",
     "@microlink/react": "^5.5.22",
     "@radix-ui/react-avatar": "1.1.1",
-    "@radix-ui/react-dialog": "1.1.1",
+    "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "2.1.1",
     "@radix-ui/react-label": "2.1.0",
     "@radix-ui/react-popover": "1.1.2",
@@ -42,6 +41,7 @@
     "axios": "1.7.7",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
+    "cmdk": "^1.0.0",
     "date-fns": "3.6.0",
     "dropzone": "^6.0.0-beta.2",
     "embla-carousel-react": "8.2.1",

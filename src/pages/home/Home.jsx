@@ -42,7 +42,7 @@ const Home = () => {
     if (!isLoggedIn) {
       setCurrentData(null);
       setToken(null);
-      navigate(`/${path.AUTH}/${path.LOGIN}`);
+      navigate(`${path.HOME}${path.AUTH}/${path.LOGIN}`);
     }
 
     if (isLoggedIn) {
@@ -126,9 +126,9 @@ const DropPosts = ({ userName }) => {
     else if (window.location.pathname === "/search") setSortPost("Tìm kiếm");
     else if (window.location.pathname === "/activity") setSortPost("Hoạt động");
     else if (window.location.pathname === "/404") setSortPost("404");
-    else if (window.location.pathname.split("/")[1] === "messager")
+    else if (window.location.pathname.split("/")[2] === "messager")
       setSortPost("Tin nhắn");
-    else if (window.location.pathname.split("/")[1] === "post")
+    else if (window.location.pathname.split("/")[2] === "post")
       setSortPost("Threads");
     else setSortPost(user_name === userName ? "Trang cá nhân" : user_name);
   }, [window.location.pathname, user_name]);

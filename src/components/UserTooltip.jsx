@@ -6,6 +6,7 @@ import maleIcon from "@/assets/male-icon.svg";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import useCurrentStore from "@/zustand/useCurrentStore";
+import path from "@/lib/path";
 
 const UserTooltip = ({ children, user }) => {
   const { currentData } = useCurrentStore();
@@ -18,7 +19,7 @@ const UserTooltip = ({ children, user }) => {
         <TooltipContent className="space-y-5">
           <div className="flex min-w-60 max-w-80 flex-col gap-3 break-words px-1 py-2.5 md:min-w-52">
             <div className="flex items-center justify-between gap-20">
-              <Link to={`${user?.userName}`}>
+              <Link to={path.HOME + user?.userName}>
                 <span className="text-lg font-semibold hover:underline">
                   {user?.displayName}
                 </span>
@@ -40,7 +41,7 @@ const UserTooltip = ({ children, user }) => {
                   )}
                 </span>
               </Link>
-              <Link to={`/${user?.userName}`} className="size-[70px]">
+              <Link to={path.HOME + user?.userName} className="size-[70px]">
                 <UserAvatar
                   avatarUrl={user?.avatarUrl}
                   displayName={user?.displayName}
