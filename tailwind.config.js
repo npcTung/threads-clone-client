@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import tailwindAnime from "tailwindcss-animate";
+import tailwindScrollbar from "tailwind-scrollbar";
+
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -54,5 +57,5 @@ export default {
       fontFamily: { roboto: ["Roboto", "sans-serif"] },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
+  plugins: [tailwindAnime, tailwindScrollbar],
 };
