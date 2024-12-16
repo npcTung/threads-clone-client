@@ -68,7 +68,7 @@ const User = () => {
 
   const userPosts = data?.pages.flatMap((page) => page.posts) || [];
 
-  if (isLoading || status === "pending") return <LoadingScreen />;
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <div className="max-w-[720px] w-full mx-auto mb-10 border space-y-5 md:rounded-2xl bg-card">
@@ -79,6 +79,12 @@ const User = () => {
       <InfiniteScrollContainer
         onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
       >
+        {status === "pending" && <LoaderCircle className="size-5" />}
+        {status === "success" && !userPosts?.posts?.length && !hasNextPage && (
+          <div className="p-5 flex items-center justify-center">
+            <span className="text-center">Không có bình luận nào.</span>
+          </div>
+        )}
         {userPosts.map((post, idx) => (
           <Post
             key={idx}
