@@ -8,12 +8,16 @@ import path from "@/lib/path";
 const useCurrentData = () => {
   const { setCurrentData, setIsLoggedIn, setIsLoading } = useCurrentStore();
 
-  const getCurrentData = async () => {
+  const getCurrentData = () => {
     setIsLoading(true);
     try {
-      const response = await apis.getCurrent();
-      if (response.success) setCurrentData(response.data);
-      else setIsLoggedIn(false);
+      const settimeoutId = setTimeout(async () => {
+        const response = await apis.getCurrent();
+        if (response.success) setCurrentData(response.data);
+        else setIsLoggedIn(false);
+      }, 2000);
+
+      return () => clearTimeout(settimeoutId);
     } catch (error) {
       setIsLoggedIn(false);
       console.error(error.message);

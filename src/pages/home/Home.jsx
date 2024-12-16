@@ -26,13 +26,24 @@ const { Plus, ChevronDown, Check } = icons;
 
 const Home = () => {
   const [showCreatePost, setShowCreatePost] = useState(false);
-  const { isLoggedIn, currentData, isLoading, token } = useCurrentStore();
+  const {
+    isLoggedIn,
+    currentData,
+    isLoading,
+    token,
+    setCurrentData,
+    setToken,
+  } = useCurrentStore();
   const { sortPost, isShowSetting, setIsShowSetting } = useAppStore();
   const navigate = useNavigate();
   const currentUser = useCurrentData();
 
   useEffect(() => {
-    if (!isLoggedIn) navigate(`/${path.AUTH}/${path.LOGIN}`);
+    if (!isLoggedIn) {
+      setCurrentData(null);
+      setToken(null);
+      navigate(`/${path.AUTH}/${path.LOGIN}`);
+    }
 
     if (isLoggedIn) {
       currentUser.getCurrentData();
