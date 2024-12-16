@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://npcTung.github.io/threads-clone-client",
+  "homepage": "https://npctung.github.io/threads-clone-client",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
