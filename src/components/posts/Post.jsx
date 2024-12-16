@@ -94,7 +94,7 @@ const Post = ({ className, data }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          to={`${path.HOME}${path.POSTS}/${data?._id}`}
+                          to={`/${path.POSTS}/${data?._id}`}
                           className="opacity-50"
                         >
                           <small>{formatRelativeDate(data?.createdAt)}</small>
@@ -122,10 +122,7 @@ const Post = ({ className, data }) => {
                   )}
                 />
               </div>
-              <Link
-                to={`${path.HOME}${path.POSTS}/${data?._id}`}
-                className="text-sm"
-              >
+              <Link to={`/${path.POSTS}/${data?._id}`} className="text-sm">
                 {data?.context}
               </Link>
 

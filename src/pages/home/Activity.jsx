@@ -111,7 +111,7 @@ const ActivityPrewiew = ({ data }) => {
             <div className="flex gap-1">
               <UserTooltip user={data.isSuerId}>
                 <Link
-                  to={path.HOME + data.isSuerId.userName}
+                  to={`/${data.isSuerId.userName}`}
                   className="font-medium hover:underline"
                 >{`${data.isSuerId.displayName}:`}</Link>
               </UserTooltip>

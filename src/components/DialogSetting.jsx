@@ -251,7 +251,7 @@ const HistoryLog = ({
   const onClickLink = (activityLog) => {
     navigate(
       activityLog.type !== "Follow"
-        ? `${path.HOME}${path.POSTS}/${activityLog.postId._id}`
+        ? `/${path.POSTS}/${activityLog.postId._id}`
         : path.HOME + activityLog.userId._id
     );
     onOpenChange(false);

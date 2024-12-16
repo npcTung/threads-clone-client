@@ -200,7 +200,7 @@ const ChatElement = ({ className, data }) => {
         const isMemberRoom = members.includes(currentData.socketId);
         if (!isMemberRoom) socket.emit("join-room", data._id);
       });
-      navigate(`${path.HOME}${path.MESSAGER}/${userConversation._id}`);
+      navigate(`/${path.MESSAGER}/${userConversation._id}`);
     }
   };
 

@@ -18,7 +18,7 @@ const Messager = ({ pathName }) => {
       asChild
     >
       <Link
-        to={path.HOME + path.MESSAGER}
+        to={`/${path.MESSAGER}`}
         onClick={() => conversation && setConversation(null)}
       >
         <div className="relative">

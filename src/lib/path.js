@@ -1,18 +1,18 @@
 const path = {
-  HOME: "/threads-clone-client/",
+  HOME: "/",
   ALL: "*",
   NOT_FOUND: "404",
   // SEARCH
   SEARCH: "search",
   // USER_NAME
-  USER__NAME: "/threads-clone-client/:user_name",
+  USER__NAME: "/:user_name",
   // SEARCH
   SEARCH: "search",
   // ACTIVITY
   ACTIVITY: "activity",
   // POSTS
   POSTS: "post",
-  POSTS__ID: "/threads-clone-client/post/:post_id",
+  POSTS__ID: "post/:post_id",
   // AUTH
   AUTH: "auth",
   LOGIN: "login",
@@ -20,7 +20,7 @@ const path = {
   FORGOT_PASSWORD: "forgot_password",
   // MESSAGER
   MESSAGER: "messager",
-  MESSAGER__ID: "/threads-clone-client/messager/:messager_id",
+  MESSAGER__ID: "messager/:messager_id",
 };
 
 export default path;
