@@ -245,7 +245,11 @@ const HistoryLog = ({
     staleTime: 5000,
   });
 
-  const activityLogs = data?.pages.flatMap((page) => page?.activityLogs) || [];
+  const activityLogs =
+    data?.pages
+      .flatMap((page) => page?.activityLogs)
+      .filter((el) => el !== undefined) || [];
+
   const navigate = useNavigate();
 
   const onClickLink = (activityLog) => {

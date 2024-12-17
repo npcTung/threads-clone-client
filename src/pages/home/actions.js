@@ -57,7 +57,7 @@ export const fetchGetUser = async (userName) => {
 
 export const fetchActivities = async (cursor) => {
   try {
-    const response = await apis.getActivities(cursor);
+    const response = await apis.getActivities({ cursor });
     if (response.success)
       return {
         activities: response.data,

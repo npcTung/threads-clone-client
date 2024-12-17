@@ -111,38 +111,21 @@ const InfoBody = ({ className, data }) => {
 
 const InfoFooter = ({ className }) => {
   const [isShowBlockUser, setIsShowBlockUser] = useState(false);
-  const [isShowDeleteConversation, setIsShowDeleteConversation] =
-    useState(false);
 
   return (
     <div className={cn(className)}>
-      <DialogBlockAndDeleteConversation
-        block
+      <DialogBlockConversation
         open={isShowBlockUser}
         onOpenChange={setIsShowBlockUser}
       />
-      <DialogBlockAndDeleteConversation
-        open={isShowDeleteConversation}
-        onOpenChange={setIsShowDeleteConversation}
-      />
-      <div className="flex flex-row space-x-2">
-        <TooltipIcon
-          className={"h-[52px] text-red-600"}
-          context={"Chặn tài khoản"}
-          onClick={() => setIsShowBlockUser(true)}
-        >
-          <UserX className="size-5" />
-          <span className="text-sm">Chặn</span>
-        </TooltipIcon>
-        <TooltipIcon
-          className={"h-[52px] text-red-600"}
-          context={"Xóa cuộc hội thoại"}
-          onClick={() => setIsShowDeleteConversation(true)}
-        >
-          <Trash2 className="size-5" />
-          <span className="text-sm">Xóa</span>
-        </TooltipIcon>
-      </div>
+      <TooltipIcon
+        className={"h-[52px] text-red-600"}
+        context={"Chặn tài khoản"}
+        onClick={() => setIsShowBlockUser(true)}
+      >
+        <UserX className="size-5" />
+        <span className="text-sm">Chặn</span>
+      </TooltipIcon>
     </div>
   );
 };
@@ -169,18 +152,14 @@ const TooltipIcon = ({ children, context, onClick, className }) => {
   );
 };
 
-const DialogBlockAndDeleteConversation = ({ open, onOpenChange, block }) => {
+const DialogBlockConversation = ({ open, onOpenChange }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSumbit = () => {
     setIsLoading(true);
     const setTimeoutId = setTimeout(() => {
       try {
-        toast.success(
-          block
-            ? "Chặn tài khoản thành công."
-            : "Xóa đoạn hội thoại thành công."
-        );
+        toast.success("Chặn tài khoản thành công.");
         onOpenChange(false);
       } catch (error) {
         toast.error(error.message);
@@ -197,12 +176,10 @@ const DialogBlockAndDeleteConversation = ({ open, onOpenChange, block }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {block ? "Chặn tài khoản" : "Xóa cuộc hội thoại"}
-          </DialogTitle>
-          <DialogDescription>{`Bạn có chắc muốn ${
-            block ? "chặn tài khoản" : "xóa cuộc hội thoại"
-          } này?`}</DialogDescription>
+          <DialogTitle>Chặn tài khoản</DialogTitle>
+          <DialogDescription>
+            Bạn có chắc muốnchặn tài khoản này?
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
@@ -214,7 +191,7 @@ const DialogBlockAndDeleteConversation = ({ open, onOpenChange, block }) => {
             disabled={isLoading}
             onClick={handleSumbit}
           >
-            {block ? "Chặn" : "Xóa"}
+            Chặn
           </LoadingButton>
         </DialogFooter>
       </DialogContent>

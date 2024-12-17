@@ -1,4 +1,9 @@
-import { Button, ChatSidebar, MessageInbox } from "@/components";
+import {
+  Button,
+  ChatSidebar,
+  DialogCreateConversation,
+  MessageInbox,
+} from "@/components";
 import InfoUser from "@/components/chats/InfoUser";
 import icons from "@/lib/icons";
 import { cn } from "@/lib/utils";
@@ -8,10 +13,22 @@ import React from "react";
 const { MessageCircle } = icons;
 
 const Chats = () => {
-  const { isInfoOpen, conversation } = useConversationStore();
+  const {
+    isInfoOpen,
+    conversation,
+    isShowCreateConversation,
+    setIsShowCreateConversation,
+  } = useConversationStore();
 
   return (
     <div className="lg:h-screen xl:h-screen md:h-screen h-[89vh]">
+      {/* create conversation */}
+      <DialogCreateConversation
+        open={isShowCreateConversation}
+        onOpenChange={() =>
+          setIsShowCreateConversation(isShowCreateConversation)
+        }
+      />
       <div className="h-full rounded-md bg-muted shadow-md flex">
         <ChatSidebar
           className={cn(
@@ -36,7 +53,10 @@ const Chats = () => {
             )}
           </>
         ) : (
-          <NoMessage />
+          <NoMessage
+            isShowCreateConversation={isShowCreateConversation}
+            setIsShowCreateConversation={setIsShowCreateConversation}
+          />
         )}
       </div>
     </div>
@@ -45,9 +65,10 @@ const Chats = () => {
 
 export default Chats;
 
-const NoMessage = () => {
-  const { isShowCreateConversation, setIsShowCreateConversation } =
-    useConversationStore();
+const NoMessage = ({
+  isShowCreateConversation,
+  setIsShowCreateConversation,
+}) => {
   return (
     <div className="hidden xl:flex lg:flex h-full flex-col space-y-5 items-center justify-center border-l border-muted bg-card xl:w-3/4 w-full">
       <div className="border-[3px] border-primary p-5 rounded-full w-fit">

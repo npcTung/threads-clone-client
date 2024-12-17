@@ -1,12 +1,16 @@
 import * as apis from "@/apis";
 
 export const getAllConversations = async (queriesDebounce, cursor) => {
-  const queries = { ...queriesDebounce, cursor };
-  const response = await apis.getAllConversations(queries);
-  return {
-    conversations: response.data,
-    nextCursor: response.nextCursor,
-  };
+  try {
+    const queries = { ...queriesDebounce, cursor };
+    const response = await apis.getAllConversations(queries);
+    return {
+      conversations: response.data,
+      nextCursor: response.nextCursor,
+    };
+  } catch (error) {
+    console.error(error.mes);
+  }
 };
 
 export const fetchMarkAsRead = async () => {

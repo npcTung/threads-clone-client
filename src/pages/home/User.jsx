@@ -13,7 +13,6 @@ import {
   FollowerCount,
   InfiniteScrollContainer,
   LoadingScreen,
-  NotFound,
   Post,
   UserAvatar,
 } from "@/components";
@@ -35,21 +34,18 @@ const { CircleEllipsis, Link2, Info, UserX, Dot, LoaderCircle } = icons;
 const User = () => {
   const { currentData } = useCurrentStore();
   const { user_name } = useParams();
+  const navigate = useNavigate();
 
   if (currentData.blockedUsers.map((el) => el.userName).includes(user_name))
-    return <NotFound />;
+    navigate(`/${path.NOT_FOUND}`);
 
-  const {
-    data: user,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["user", user_name],
     queryFn: () => fetchGetUser(user_name),
     staleTime: 5000,
   });
 
-  if (isError) return <NotFound />;
+  if (!user) navigate(`/${path.NOT_FOUND}`);
 
   const {
     data,
@@ -62,11 +58,14 @@ const User = () => {
     queryKey: ["posts", user_name],
     queryFn: ({ pageParam }) => fetchGetUserPosts(user_name, pageParam),
     initialPageParam: null,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    getNextPageParam: (lastPage) => lastPage?.nextCursor,
     staleTime: 5000,
   });
 
-  const userPosts = data?.pages.flatMap((page) => page.posts) || [];
+  const userPosts =
+    data?.pages
+      .flatMap((page) => page?.posts)
+      .filter((el) => el !== undefined) || [];
 
   if (isLoading) return <LoadingScreen />;
 
@@ -79,25 +78,28 @@ const User = () => {
       <InfiniteScrollContainer
         onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}
       >
-        {status === "pending" && <LoaderCircle className="size-5" />}
-        {status === "success" && !userPosts?.posts?.length && !hasNextPage && (
+        {status === "pending" && (
+          <LoaderCircle className="size-5 animate-spin mx-auto my-5" />
+        )}
+        {status === "success" && !userPosts?.length && !hasNextPage && (
           <div className="p-5 flex items-center justify-center">
-            <span className="text-center">Không có bình luận nào.</span>
+            <span className="text-center">Không có bài viết nào.</span>
           </div>
         )}
-        {userPosts.map((post, idx) => (
-          <Post
-            key={idx}
-            className={idx !== userPosts.length - 1 && "border-b"}
-            data={post}
-            isEdit={user?._id === currentData?._id}
-          />
-        ))}
-        {status === "success" && !userPosts.length && !hasNextPage && (
+        {status === "error" && (
           <div className="p-5 flex items-center justify-center">
-            <span>Không có bài viết nào</span>
+            <span className="text-center">Không có bài viết nào.</span>
           </div>
         )}
+        {userPosts.length > 0 &&
+          userPosts.map((post, idx) => (
+            <Post
+              key={idx}
+              className={idx !== userPosts.length - 1 && "border-b"}
+              data={post}
+              isEdit={user?._id === currentData?._id}
+            />
+          ))}
         {isFetchingNextPage && (
           <LoaderCircle className="mx-auto size-5 animate-spin" />
         )}

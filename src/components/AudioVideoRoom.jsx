@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,14 +11,22 @@ import {
 import icons from "@/lib/icons";
 import { UserAvatar } from ".";
 import useCurrentStore from "@/zustand/useCurrentStore";
-import { faker } from "@faker-js/faker";
+import stringeeConfing from "@/lib/stringeeConfig";
+import useCallStore from "@/zustand/useCallStore";
 
-const { Mic, MicOff, PhoneOff, Video, VideoOff } = icons;
+const { Mic, MicOff, Phone, Video, VideoOff } = icons;
 
-const AudioVideoRoom = ({ open, onOpenChange, video }) => {
+const AudioVideoRoom = ({ open, onOpenChange, video, data }) => {
   const [isMic, setIsMic] = useState(true);
   const [isVideo, setIsVideo] = useState(true);
   const { currentData } = useCurrentStore();
+  const { call } = stringeeConfing();
+  const { isCall } = useCallStore();
+
+  useEffect(() => {
+    if (isMic) call?.unmute();
+    else call?.mute();
+  }, [isMic]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -49,12 +57,12 @@ const AudioVideoRoom = ({ open, onOpenChange, video }) => {
               <div className="relative size-full bg-muted rounded-md flex items-center justify-center">
                 <div className="space-y-2 flex flex-col items-center justify-center">
                   <UserAvatar
-                    avatarUrl={faker.image.avatar()}
-                    displayName={faker.internet.displayName()}
+                    avatarUrl={data.avatarUrl}
+                    displayName={data.displayName}
                     className={"size-20 border border-primary"}
                   />
                   <div className="text-sm font-medium opacity-50">
-                    {faker.internet.displayName()}
+                    {data.displayName}
                   </div>
                   <MicOff className="absolute top-2 right-2 size-5 opacity-50" />
                 </div>
@@ -62,25 +70,35 @@ const AudioVideoRoom = ({ open, onOpenChange, video }) => {
             </div>
             {/* controls call */}
             <div className={"flex items-center justify-center space-x-3"}>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="bg-muted"
-                onClick={() => setIsMic(!isMic)}
-              >
-                {isMic ? (
-                  <Mic className="size-5" />
-                ) : (
-                  <MicOff className="size-5" />
-                )}
-              </Button>
+              {isCall ? (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-green-500 answerButton"
+                >
+                  <Phone className="size-5 fill-white" />
+                </Button>
+              ) : (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="bg-muted"
+                  onClick={() => setIsMic(!isMic)}
+                >
+                  {isMic ? (
+                    <Mic className="size-5" />
+                  ) : (
+                    <MicOff className="size-5" />
+                  )}
+                </Button>
+              )}
               <DialogClose asChild>
                 <Button
                   variant="destructive"
                   size="icon"
                   className={"rounded-full size-12"}
                 >
-                  <PhoneOff className="size-5" />
+                  <Phone className="size-5 rotate-[135deg]" />
                 </Button>
               </DialogClose>
               {video && (

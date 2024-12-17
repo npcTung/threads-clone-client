@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import {
   Button,
-  DialogCreateConversation,
   Divider,
   InfiniteScrollContainer,
   Input,
@@ -105,16 +104,11 @@ const ChatSidebar = ({ className }) => {
 export default ChatSidebar;
 
 const HeaderChat = ({ className }) => {
-  const [isShowCreateConversation, setIsShowCreateConversation] =
-    useState(false);
+  const { isShowCreateConversation, setIsShowCreateConversation } =
+    useConversationStore();
 
   return (
     <div className={cn(className)}>
-      {/* create conversation */}
-      <DialogCreateConversation
-        open={isShowCreateConversation}
-        onOpenChange={setIsShowCreateConversation}
-      />
       <div className="flex items-center flex-row justify-between">
         <div className="flex items-center space-x-1">
           <h1 className="text-xl 2xl:text-2xl font-bold cursor-default">
@@ -125,7 +119,7 @@ const HeaderChat = ({ className }) => {
           variant="ghost"
           size="icon"
           className="opacity-50 hover:opacity-100 transition-all"
-          onClick={() => setIsShowCreateConversation(true)}
+          onClick={() => setIsShowCreateConversation(isShowCreateConversation)}
         >
           <Plus className="size-5" />
         </Button>

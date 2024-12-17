@@ -13,7 +13,7 @@ const DialogFullAvatar = ({ userData, open, onOpenChange }) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="size-full flex items-center max-w-none justify-center bg-card/30 backdrop-blur-lg"
-        onClick={onOpenChange}
+        onClick={() => onOpenChange(false)}
       >
         <DialogHeader>
           <DialogTitle />

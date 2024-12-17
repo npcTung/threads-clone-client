@@ -45,6 +45,7 @@ import { useSendMessageMutation } from "./mutation";
 import { useInView } from "react-intersection-observer";
 import { socket } from "@/lib/socketConfig";
 import useConversationStore from "@/zustand/useConversationStore";
+// import stringeeConfing from "@/lib/stringeeConfig";
 
 const {
   Phone,
@@ -174,13 +175,18 @@ export default MessageInbox;
 
 const HeaderInbox = ({ className, data }) => {
   const { currentData } = useCurrentStore();
-  const { isInfoOpen, setIsInfoOpen, setConversation, conversation } =
-    useConversationStore();
+  const { isInfoOpen, setIsInfoOpen, setConversation } = useConversationStore();
   const [isShowVideoRoom, setIsShowVideoRoom] = useState(false);
   const [isShowAudioRoom, setIsShowAudioRoom] = useState(false);
+  // const { makeCall } = stringeeConfing();
   const userConversation = data?.participants.find(
     (el) => el._id !== currentData._id
   );
+
+  const handleAudioCall = () => {
+    // makeCall(userConversation._id);
+    setIsShowAudioRoom(true);
+  };
 
   return (
     <div className={cn(className)}>
@@ -189,11 +195,13 @@ const HeaderInbox = ({ className, data }) => {
         open={isShowVideoRoom}
         onOpenChange={setIsShowVideoRoom}
         video
+        data={userConversation}
       />
       {/* Audio room */}
       <AudioVideoRoom
         open={isShowAudioRoom}
         onOpenChange={setIsShowAudioRoom}
+        data={userConversation}
       />
       <div className="flex items-center space-x-3">
         <div
@@ -228,10 +236,7 @@ const HeaderInbox = ({ className, data }) => {
         </div>
       </div>
       <div className="flex items-center space-x-3 h-full">
-        <TooltipIcon
-          content={"Gọi thoại"}
-          onClick={() => setIsShowAudioRoom(true)}
-        >
+        <TooltipIcon content={"Gọi thoại"} onClick={handleAudioCall}>
           <Phone className="size-5" />
         </TooltipIcon>
         <TooltipIcon

@@ -18,12 +18,13 @@ VITE_API_URI=...
 VITE_GOOGLE_CLIENT_ID=...
 // giphy api key
 VITE_API_GIPHY=...
+// stringee api key
+VITE_API_KEY_STRINGEE=...
+VITE_API_SECRET_KEY_STRINGEE=...
 ```
 
-# Setup logging to google
+# Setup logging to google, api key giphy, stringee api key
 
 - [@google cloud console](https://cloud.google.com/cloud-console) to get client id
-
-# Setup api key giphy
-
 - [@api key giphy](https://developers.giphy.com/docs/) logging and click to button [Create an API Key]
+- [@api key stringee](https://asia-1.console.stringee.com/project) login and click on new project button to create new project to get api key
