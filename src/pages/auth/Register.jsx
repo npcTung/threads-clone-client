@@ -10,7 +10,7 @@ const Register = () => {
       <div className="flex h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl bg-card shadow-lg border">
         <div className="w-full space-y-10 overflow-y-auto p-10 md:w-1/2">
           <div className="space-y-1 text-center">
-            <h1 className="text-3xl font-bold">Đăng ký vào bugbookk</h1>
+            <h1 className="text-3xl font-bold">Đăng ký vào Threads</h1>
             <span className="text-muted-foreground">
               Nơi mà ngay cả <span className="italic">bạn</span> cũng có thể tìm
               thấy một người bạn.
