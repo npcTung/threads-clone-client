@@ -28,7 +28,7 @@ import { getAllCommentsPost } from "./actions";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDeleteCommentMutation, useLikeCommentMutation } from "./mutations";
 
-const { ChevronRight, Dot, Heart, Ellipsis, Trash2, LoaderCircle } = icons;
+const { ChevronRight, Dot, Heart, Trash2, LoaderCircle } = icons;
 
 const Comments = ({ postId }) => {
   const queryKey = ["comments", postId];

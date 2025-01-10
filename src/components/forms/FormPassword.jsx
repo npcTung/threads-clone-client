@@ -55,7 +55,7 @@ const PasswordInput = React.forwardRef(function PasswordInput(
             <TooltipTrigger
               asChild
               className="cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? (
                 <Eye className="size-5" />

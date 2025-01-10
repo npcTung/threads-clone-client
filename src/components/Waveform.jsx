@@ -28,7 +28,7 @@ const Waveform = (props) => {
       } else {
         wavesurfer.play();
       }
-      setIsPlaying(!isPlaying);
+      setIsPlaying((prev) => !prev);
     }
   };
 

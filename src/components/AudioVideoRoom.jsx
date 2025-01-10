@@ -83,7 +83,7 @@ const AudioVideoRoom = ({ open, onOpenChange, video, data }) => {
                   variant="ghost"
                   size="icon"
                   className="bg-muted"
-                  onClick={() => setIsMic(!isMic)}
+                  onClick={() => setIsMic((prev) => !prev)}
                 >
                   {isMic ? (
                     <Mic className="size-5" />
@@ -106,7 +106,7 @@ const AudioVideoRoom = ({ open, onOpenChange, video, data }) => {
                   variant="ghost"
                   size="icon"
                   className="bg-muted"
-                  onClick={() => setIsVideo(!isVideo)}
+                  onClick={() => setIsVideo((prev) => !prev)}
                 >
                   {isVideo ? (
                     <Video className="size-5" />

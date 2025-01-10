@@ -20,7 +20,7 @@ import { LoadingButton, UserAvatar } from "..";
 import { toast } from "sonner";
 import useConversationStore from "@/zustand/useConversationStore";
 
-const { X, Clock3, UserX, Trash2 } = icons;
+const { X, Clock3, UserX } = icons;
 
 const InfoUser = ({ className }) => {
   const { conversation } = useConversationStore();

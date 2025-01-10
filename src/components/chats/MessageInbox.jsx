@@ -425,7 +425,7 @@ const InputForNewChat = ({ className, data }) => {
                   size="icon"
                   type="button"
                   className="opacity-50 hover:opacity-100 transition-all"
-                  onClick={() => setIsGifOpen(!isGifOpen)}
+                  onClick={() => setIsGifOpen((prev) => !prev)}
                 >
                   <GifIcon size={24} />
                 </Button>

@@ -27,7 +27,7 @@ const Giphy = ({ className, recipientId }) => {
   const gridRef = useRef(null);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [gifs, setGifs] = useState([]);
   const [gifUrl, setGifUrl] = useState("");
   const [isShowSendGif, setIsShowSendGif] = useState(false);

@@ -12,6 +12,8 @@ import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditInput, LoadingButton, UserAvatar } from "..";
 import { useCommentMutation } from "./mutations";
+import { toxicLanguage } from "@/lib/utils";
+import { toast } from "sonner";
 
 const DialogCreateCommnet = ({ open, onOpenChange, data, postId }) => {
   const mutation = useCommentMutation(postId);
@@ -28,6 +30,12 @@ const DialogCreateCommnet = ({ open, onOpenChange, data, postId }) => {
   const onClose = () => {
     onOpenChange();
     editor.commands.clearContent();
+  };
+
+  const handleSubmit = () => {
+    if (!toxicLanguage(input))
+      mutation.mutate({ context: input }, { onSuccess: onClose });
+    else toast.warning("Nội dung không hợp lệ.");
   };
 
   return (
@@ -60,9 +68,7 @@ const DialogCreateCommnet = ({ open, onOpenChange, data, postId }) => {
             disabled={!input.trim()}
             loading={mutation.isPending}
             variant="outline"
-            onClick={() =>
-              mutation.mutate({ context: input }, { onSuccess: onClose })
-            }
+            onClick={handleSubmit}
           >
             Đăng
           </LoadingButton>

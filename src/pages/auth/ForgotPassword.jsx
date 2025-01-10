@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as apis from "@/apis";
 import { toast } from "sonner";
+import ImageForgotPassword from "@/assets/forgot-password.avif";
 
 const { AlertCircle, MoveLeft, RotateCcw } = icons;
 
@@ -61,8 +62,8 @@ const ForgotPassword = () => {
         email={email}
       />
       <main className="flex h-screen items-center justify-center p-5">
-        <div className="h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl bg-card shadow-lg">
-          <div className="w-full space-y-10 overflow-y-auto p-10">
+        <div className="h-full max-h-[40rem] w-full max-w-[64rem] overflow-hidden rounded-2xl bg-card shadow-lg flex border border-muted">
+          <div className="w-full space-y-10 overflow-y-auto p-10 flex-1">
             <div className="space-y-1 text-center relative">
               <h1 className="text-3xl font-bold">Quên mật khẩu</h1>
               <span className="text-muted-foreground">
@@ -71,7 +72,7 @@ const ForgotPassword = () => {
               <Link
                 to={`/${path.AUTH}/${path.LOGIN}`}
                 title="Quay về trang đăng nhập"
-                className="absolute top-0 left-0 cursor-pointer p-2 border rounded-full hover:bg-muted"
+                className="absolute -top-8 -left-8 cursor-pointer p-2 border rounded-full hover:bg-muted"
               >
                 <MoveLeft className="size-5" />
               </Link>
@@ -97,6 +98,13 @@ const ForgotPassword = () => {
                 Gửi
               </LoadingButton>
             </div>
+          </div>
+          <div className="flex-1">
+            <img
+              src={ImageForgotPassword}
+              alt="image forgotPassword"
+              className="size-full object-cover"
+            />
           </div>
         </div>
       </main>

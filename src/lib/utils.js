@@ -2,6 +2,8 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { formatDate, formatDistanceToNowStrict } from "date-fns";
 import { vi } from "date-fns/locale";
+import { Filter } from "bad-words";
+import toxic from "@/data/toxicTextVietnamese";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -64,4 +66,10 @@ export const compareTime = (timestamp) => {
   const createdAt = new Date(timestamp).getTime();
   const currentDate = new Date().getTime();
   return Math.abs(currentDate - createdAt) >= 3600000;
+};
+
+export const toxicLanguage = (text) => {
+  const filter = new Filter();
+  for (let word of toxic) filter.addWords(word);
+  return filter.isProfane(text);
 };

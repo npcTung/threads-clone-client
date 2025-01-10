@@ -31,7 +31,7 @@ const Post = ({ className, data }) => {
   const [showEditPost, setShowEditPost] = useState(false);
   const { currentData } = useCurrentStore();
   const mutation = useLikePostMutation();
-  const isLike = data.likes.includes(currentData._id);
+  const isLike = data?.likes.includes(currentData._id);
 
   return (
     <>

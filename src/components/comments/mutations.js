@@ -27,7 +27,9 @@ export const useCommentMutation = (postId) => {
             pageParams: oldData.pageParams,
             pages: [
               {
-                comments: [newComment.data, ...firstComment.comments],
+                comments: firstComment.comments.length
+                  ? [newComment.data, ...firstComment.comments]
+                  : [newComment.data],
                 nextCursor: firstComment.nextCursor,
               },
               ...oldData.pages.slice(1),
