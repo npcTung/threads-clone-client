@@ -10,13 +10,13 @@ import { FileDrop, LoadingButton } from ".";
 import { toast } from "sonner";
 import { useSendMessageDocumentMutation } from "./chats/mutation";
 
-const DocumentPicker = ({ open, onOpenChange, recipientId }) => {
+const DocumentPicker = ({ open, onOpenChange, recipients }) => {
   const [files, setFiles] = useState([]);
   const mutation = useSendMessageDocumentMutation();
 
   const handleSumbit = () => {
     if (files.length <= 10) {
-      const payload = { document: files[0], recipientId };
+      const payload = { document: files[0], recipients };
       mutation.mutate(payload, { onSuccess: onClose });
     } else toast.warning("Số lượng file không được vượt quá 10.");
   };

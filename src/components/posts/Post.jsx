@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
   DialogCreateCommnet,
   DialogDeletePost,
+  DialogEditHistory,
   DialogEditPost,
   DialogMedias,
   DropPost,
@@ -21,6 +22,7 @@ import { formatDate } from "date-fns";
 import { vi } from "date-fns/locale";
 import useCurrentStore from "@/zustand/useCurrentStore";
 import { useLikePostMutation } from "./mutations";
+import useAppStore from "@/zustand/useAppStore";
 
 const { Dot, Heart, MessageSquare } = icons;
 
@@ -32,6 +34,7 @@ const Post = ({ className, data }) => {
   const { currentData } = useCurrentStore();
   const mutation = useLikePostMutation();
   const isLike = data?.likes.includes(currentData._id);
+  const { isShowEditHistory, setIsShowEditHistory } = useAppStore();
 
   return (
     <>

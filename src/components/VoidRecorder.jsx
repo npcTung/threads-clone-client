@@ -16,7 +16,7 @@ import icons from "@/lib/icons";
 
 const { File } = icons;
 
-const VoidRecorder = ({ open, onOpenChange, recipientId }) => {
+const VoidRecorder = ({ open, onOpenChange, recipients }) => {
   const [audio, setAudio] = useState("");
   const [urlAudio, setUrlAudio] = useState(null);
   const mutation = useSendMessageAudioMutation();
@@ -37,7 +37,7 @@ const VoidRecorder = ({ open, onOpenChange, recipientId }) => {
   };
 
   const handleSumbit = () => {
-    const payload = { audio, recipientId };
+    const payload = { audio, recipients };
     mutation.mutate(payload, { onSuccess: onClose });
   };
 

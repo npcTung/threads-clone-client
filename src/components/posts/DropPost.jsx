@@ -10,8 +10,10 @@ import {
 import icons from "@/lib/icons";
 import { toast } from "sonner";
 import { useBookmarkPostUser } from "@/hooks/useCurrentData";
+import useAppStore from "@/zustand/useAppStore";
 
-const { Ellipsis, Bookmark, Link2, SquarePen, Trash2, BookmarkCheck } = icons;
+const { Ellipsis, Bookmark, Link2, SquarePen, Trash2, BookmarkCheck, History } =
+  icons;
 
 const DropPost = ({
   postId,
@@ -19,8 +21,10 @@ const DropPost = ({
   isEdit,
   setEditPost,
   isCheckBookMark,
+  isHistory,
 }) => {
   const bookmark = useBookmarkPostUser();
+  const { isShowEditHistory, setIsShowEditHistory } = useAppStore();
 
   const copyUrl = () => {
     const url = `${window.location.origin}/${path.POSTS}/${postId}`;
@@ -54,6 +58,18 @@ const DropPost = ({
           <span>Sao chép liên kết</span>
           <Link2 className="size-5 -rotate-45" />
         </DropdownMenuItem>
+        {isHistory && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="flex items-center justify-between gap-5 cursor-pointer"
+              onClick={() => setIsShowEditHistory(isShowEditHistory)}
+            >
+              <span>Lịch sử chỉnh sửa</span>
+              <History className="size-5 -rotate-45" />
+            </DropdownMenuItem>
+          </>
+        )}
         {isEdit && (
           <>
             <DropdownMenuSeparator />

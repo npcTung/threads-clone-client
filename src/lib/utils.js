@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { formatDate, formatDistanceToNowStrict } from "date-fns";
 import { vi } from "date-fns/locale";
 import { Filter } from "bad-words";
-import toxic from "@/data/toxicTextVietnamese";
+import { toxic } from "@/data";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));

@@ -10,14 +10,14 @@ import { FileDrop, LoadingButton } from ".";
 import { toast } from "sonner";
 import { useSendMessageMediasMutation } from "./chats/mutation";
 
-const MediaPicker = ({ open, onOpenChange, recipientId }) => {
+const MediaPicker = ({ open, onOpenChange, recipients }) => {
   const [images, setImages] = useState([]);
   const mutation = useSendMessageMediasMutation();
 
   const handleSumbit = () => {
     if (images.length <= 10) {
       const payload = {
-        recipientId,
+        recipients,
         images,
       };
       mutation.mutate(payload, { onSuccess: onClose });

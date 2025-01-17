@@ -12,3 +12,17 @@ export const getConversation = (recipientId) =>
     url: endpoints.conversations.getConversation + recipientId,
     method: "GET",
   });
+
+export const updateNameConversation = (conversationId, data) =>
+  axiosConfig({
+    url: endpoints.conversations.updateNameConversation + conversationId,
+    method: "PUT",
+    data,
+  });
+
+export const updateParticipant = (conversationId, data) =>
+  axiosConfig({
+    url: endpoints.conversations.updateParticipant + conversationId,
+    method: "PUT",
+    data,
+  });

@@ -179,13 +179,24 @@ const HeaderInbox = ({ className, data }) => {
   const [isShowVideoRoom, setIsShowVideoRoom] = useState(false);
   const [isShowAudioRoom, setIsShowAudioRoom] = useState(false);
   // const { makeCall } = stringeeConfing();
-  const userConversation = data?.participants.find(
+  const userConversation = data?.participants.filter(
     (el) => el._id !== currentData._id
   );
 
   const handleAudioCall = () => {
     // makeCall(userConversation._id);
     setIsShowAudioRoom(true);
+  };
+
+  const isStatus = () => {
+    const seen = new Set();
+    if (userConversation.length >= 2) {
+      for (let user of userConversation) {
+        if (seen.has(user.status)) return true;
+        seen.add(user.status);
+      }
+      return false;
+    } else return userConversation[0].status === "Online";
   };
 
   return (
@@ -211,26 +222,30 @@ const HeaderInbox = ({ className, data }) => {
           <ArrowLeft className="size-5" />
         </div>
         <UserAvatar
-          avatarUrl={userConversation?.avatarUrl}
-          displayName={userConversation?.displayName}
+          avatarUrl={!userConversation.length && userConversation?.avatarUrl}
+          displayName={
+            userConversation.length >= 2
+              ? data.nameConversation
+              : userConversation[0]?.displayName
+          }
           className={"size-[50px] border border-primary"}
         />
         <div className="flex flex-col space-y-0.5 cursor-default">
           <span className="text-sm font-medium">
-            {userConversation?.displayName}
+            {userConversation.length >= 2
+              ? data.nameConversation
+              : userConversation[0]?.displayName}
           </span>
           <small
             className={cn(
               "font-medium",
-              userConversation?.status === "Offline"
-                ? "opacity-50"
-                : "text-green-600"
+              !isStatus() ? "opacity-50" : "text-green-600"
             )}
           >
-            {userConversation.status === "Online"
+            {isStatus()
               ? "Đang hoạt động"
-              : userConversation.status_expiry_time
-              ? formatRelativeDate(userConversation.status_expiry_time)
+              : userConversation[0].status_expiry_time
+              ? formatRelativeDate(userConversation[0].status_expiry_time)
               : "Offline"}
           </small>
         </div>
@@ -368,9 +383,10 @@ const InputForNewChat = ({ className, data }) => {
   const [isShowVoidRecorder, setIsShowVoidRecorder] = useState(false);
   const { currentData } = useCurrentStore();
 
-  const userConversation = data?.participants.find(
-    (el) => el._id !== currentData._id
-  );
+  const recipients = data?.participants
+    .filter((el) => el._id !== currentData._id)
+    .map((item) => item._id);
+
   const mutation = useSendMessageMutation();
 
   const addEmoji = (e) => {
@@ -382,7 +398,7 @@ const InputForNewChat = ({ className, data }) => {
     e.preventDefault();
     const paylodad = {
       content: input,
-      recipientId: userConversation._id,
+      recipients,
     };
     mutation.mutate(paylodad, { onSuccess: () => setInput("") });
   };
@@ -393,7 +409,7 @@ const InputForNewChat = ({ className, data }) => {
       <VoidRecorder
         open={isShowVoidRecorder}
         onOpenChange={setIsShowVoidRecorder}
-        recipientId={userConversation._id}
+        recipients={recipients}
       />
       <form
         onSubmit={handleSumbit}
@@ -419,7 +435,7 @@ const InputForNewChat = ({ className, data }) => {
                 >
                   <Mic className="size-5" />
                 </Button>
-                <DropdownFile recipientId={userConversation._id} />
+                <DropdownFile recipients={recipients} />
                 <Button
                   variant="ghost"
                   size="icon"
@@ -444,9 +460,7 @@ const InputForNewChat = ({ className, data }) => {
           <SendHorizontal className="size-5 -rotate-45" />
         </LoadingButton>
       </form>
-      {isGifOpen && (
-        <Giphy className={"w-full mt-3"} recipientId={userConversation._id} />
-      )}
+      {isGifOpen && <Giphy className={"w-full mt-3"} recipients={recipients} />}
     </div>
   );
 };
@@ -497,7 +511,7 @@ const GifIcon = ({ size = 20 }) => {
   );
 };
 
-const DropdownFile = ({ recipientId }) => {
+const DropdownFile = ({ recipients }) => {
   const [isShowMediaPicker, setIsShowMediaPicker] = useState(false);
   const [isShowDocumentPicker, setIsShowDocumentPicker] = useState(false);
 
@@ -507,13 +521,13 @@ const DropdownFile = ({ recipientId }) => {
       <MediaPicker
         open={isShowMediaPicker}
         onOpenChange={setIsShowMediaPicker}
-        recipientId={recipientId}
+        recipients={recipients}
       />
       {/* DocumentPicker */}
       <DocumentPicker
         open={isShowDocumentPicker}
         onOpenChange={setIsShowDocumentPicker}
-        recipientId={recipientId}
+        recipients={recipients}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

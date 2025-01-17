@@ -15,7 +15,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import icons from "@/lib/icons";
 import useCurrentStore from "@/zustand/useCurrentStore";
 import { toast } from "sonner";
-import { convertFile } from "@/lib/utils";
+import { convertFile, toxicLanguage } from "@/lib/utils";
 import { useUpdatePostMutation } from "./mutations";
 
 const { ImagePlus } = icons;
@@ -55,19 +55,21 @@ const DialogEditPost = ({ open, onOpenChange, data }) => {
 
   const handleSubmit = async () => {
     if (files.length <= 10 && input.trim()) {
-      let size = 0;
-      for (let file of files) size += file.size;
-      if (size > maxSize)
-        return toast.warning("Dung lượng file quá lớn (không quá 50mb).");
+      if (!toxicLanguage(input)) {
+        let size = 0;
+        for (let file of files) size += file.size;
+        if (size > maxSize)
+          return toast.warning("Dung lượng file quá lớn (không quá 50mb).");
 
-      const payload = {
-        context: input,
-        files: files?.length ? Array.from(files) : [],
-      };
-      mutation.mutate(
-        { postId: data._id, payload },
-        { onSuccess: () => onOpenChange(false) }
-      );
+        const payload = {
+          context: input,
+          files: files?.length ? Array.from(files) : [],
+        };
+        mutation.mutate(
+          { postId: data._id, payload },
+          { onSuccess: () => onOpenChange(false) }
+        );
+      } else toast.warning("Nội dung không hợp lệ.");
     } else
       toast.warning(
         files.length > 10 && "Số lượng file không được vượt quá 10."

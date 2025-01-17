@@ -67,6 +67,7 @@ import {
   RotateCcw,
   TriangleAlert,
   Settings,
+  History,
 } from "lucide-react";
 
 const icons = {
@@ -138,6 +139,7 @@ const icons = {
   RotateCcw,
   TriangleAlert,
   Settings,
+  History,
 };
 
 export default icons;

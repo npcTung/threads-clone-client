@@ -318,9 +318,7 @@ const HistoryLog = ({
                     />
                     <div className="flex flex-col">
                       <div className="flex items-center space-x-1 text-sm whitespace-nowrap">
-                        <span className="font-bold">
-                          {activityLog.userId.displayName}
-                        </span>
+                        <span className="font-bold">Bạn</span>
                         <span>
                           {activityLog.type === "Like" && "thích bài viết"}
                           {activityLog.type === "Post" && "tạo bài viết mới"}

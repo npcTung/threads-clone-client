@@ -16,6 +16,7 @@ import { formatDate } from "date-fns";
 import icons from "@/lib/icons";
 import { toast } from "sonner";
 import JSZip from "jszip";
+import useConversationStore from "@/zustand/useConversationStore";
 
 const { Check, CheckCheck, Download } = icons;
 
@@ -95,7 +96,7 @@ const MediasGrid = ({ medias, setIsShowMedias }) => {
         <div
           key={idx}
           className={cn(
-            "relative h-[150px] cursor-pointer",
+            "relative h-[150px] cursor-pointer border border-muted rounded-md overflow-hidden",
             medias.length === 1 && "col-span-2 row-span-2",
             medias.length === 2 && "col-span-1 row-span-2",
             medias.length > 2 && "col-span-1 row-span-1"
@@ -119,6 +120,7 @@ const MediasGrid = ({ medias, setIsShowMedias }) => {
 };
 
 const DialogMedias = ({ open, onOpenChange, medias }) => {
+  const { conversation } = useConversationStore();
   const handleDowloadAll = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -136,7 +138,7 @@ const DialogMedias = ({ open, onOpenChange, medias }) => {
       const link = document.createElement("a");
       const url = window.URL.createObjectURL(content);
       link.href = url;
-      link.download = "files.zip";
+      link.download = `${conversation.nameConversation}_media.zip`;
       link.click();
       window.URL.revokeObjectURL(url);
       toast.success("Tải xuống thành công.");
@@ -163,7 +165,7 @@ const DialogMedias = ({ open, onOpenChange, medias }) => {
           <DialogDescription />
         </DialogHeader>
         <div
-          className="h-full max-w-[500px] bg-primary-foreground rounded-lg overflow-hidden"
+          className="h-full flex justify-center max-w-[500px] bg-primary-foreground rounded-lg overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <Carousel opts={{ align: "start" }} className="w-full rounded-2xl">

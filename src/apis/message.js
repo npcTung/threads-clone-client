@@ -1,36 +1,36 @@
 import axiosConfig, { endpoints } from "@/lib/axiosConfig";
 
-export const sendMessage = (recipientId, data) =>
+export const sendMessage = (data) =>
   axiosConfig({
-    url: endpoints.messages.sendMessage + recipientId,
+    url: endpoints.messages.sendMessage,
     method: "POST",
     data,
   });
 
-export const sendMedias = (recipientId, data) =>
+export const sendMedias = (data) =>
   axiosConfig({
-    url: endpoints.messages.sendMedias + recipientId,
+    url: endpoints.messages.sendMedias,
     method: "POST",
     data,
   });
 
-export const sendAudio = (recipientId, data) =>
+export const sendAudio = (data) =>
   axiosConfig({
-    url: endpoints.messages.sendAudio + recipientId,
+    url: endpoints.messages.sendAudio,
     method: "POST",
     data,
   });
 
-export const sendDocument = (recipientId, data) =>
+export const sendDocument = (data) =>
   axiosConfig({
-    url: endpoints.messages.sendDocument + recipientId,
+    url: endpoints.messages.sendDocument,
     method: "POST",
     data,
   });
 
-export const sendGiphy = (recipientId, data) =>
+export const sendGiphy = (data) =>
   axiosConfig({
-    url: endpoints.messages.sendGiphy + recipientId,
+    url: endpoints.messages.sendGiphy,
     method: "POST",
     data,
   });

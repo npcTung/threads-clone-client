@@ -23,7 +23,7 @@ const { AlertCircle, Search } = icons;
 
 const gf = new GiphyFetch(import.meta.env.VITE_API_GIPHY);
 
-const Giphy = ({ className, recipientId }) => {
+const Giphy = ({ className, recipients }) => {
   const gridRef = useRef(null);
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +79,7 @@ const Giphy = ({ className, recipientId }) => {
         open={isShowSendGif}
         onOpenChange={setIsShowSendGif}
         gifUrl={gifUrl}
-        recipientId={recipientId}
+        recipients={recipients}
       />
       <Input
         value={value}
@@ -129,11 +129,11 @@ const Giphy = ({ className, recipientId }) => {
 
 export default Giphy;
 
-const DialogSendGif = ({ open, onOpenChange, gifUrl, recipientId }) => {
+const DialogSendGif = ({ open, onOpenChange, gifUrl, recipients }) => {
   const mutation = useSendMessageGiphyMutation();
 
   const handleSumbit = () => {
-    const payload = { giphyUrl: gifUrl, recipientId };
+    const payload = { giphyUrl: gifUrl, recipients };
     mutation.mutate(payload, { onSuccess: () => onOpenChange(false) });
   };
 

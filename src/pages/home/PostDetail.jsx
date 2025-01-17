@@ -2,6 +2,7 @@ import {
   Comments,
   DialogCreateCommnet,
   DialogDeletePost,
+  DialogEditHistory,
   DialogEditPost,
   DialogMedias,
   DropPost,
@@ -25,6 +26,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getDetialPost } from "./actions";
 import { useLikePostMutation } from "@/components/posts/mutations";
+import useAppStore from "@/zustand/useAppStore";
 
 const { Dot, Heart, MessageSquare } = icons;
 
@@ -106,9 +108,16 @@ const PostHeader = ({
 }) => {
   const isLike = data.likes.includes(currentData._id);
   const mutation = useLikePostMutation();
+  const { isShowEditHistory, setIsShowEditHistory } = useAppStore();
 
   return (
     <div className={"w-full flex items-center justify-between p-5"}>
+      {/* history edit */}
+      <DialogEditHistory
+        open={isShowEditHistory}
+        onOpenChange={() => setIsShowEditHistory(isShowEditHistory)}
+        data={data.historys}
+      />
       <div className="flex flex-col items-center w-full">
         <div className="flex flex-col space-y-3 w-full">
           <div className="flex justify-between gap-5 w-full">
@@ -145,6 +154,7 @@ const PostHeader = ({
               setDeletePost={setShowDeletePost}
               isEdit={data.postedBy._id === currentData._id}
               setEditPost={setShowEditPost}
+              isHistory={!!data.historys.length}
             />
           </div>
           <span className="text-sm">{data.context}</span>

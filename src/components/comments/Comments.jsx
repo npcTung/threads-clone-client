@@ -28,7 +28,7 @@ import { getAllCommentsPost } from "./actions";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useDeleteCommentMutation, useLikeCommentMutation } from "./mutations";
 
-const { ChevronRight, Dot, Heart, Trash2, LoaderCircle } = icons;
+const { Dot, Heart, Trash2, LoaderCircle } = icons;
 
 const Comments = ({ postId }) => {
   const queryKey = ["comments", postId];
@@ -72,10 +72,6 @@ const Comments = ({ postId }) => {
       <div className="w-full flex flex-col space-y-5">
         <div className="flex justify-between items-center p-5 border-b">
           <span>Thread trả lời</span>
-          <div className="flex items-center gap-1 text-sm opacity-50 cursor-pointer">
-            <span>Xem hoạt động</span>
-            <ChevronRight className="size-5" />
-          </div>
         </div>
         <InfiniteScrollContainer
           onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}

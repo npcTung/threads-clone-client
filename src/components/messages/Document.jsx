@@ -4,6 +4,7 @@ import icons from "@/lib/icons";
 import { bytesToMB, cn } from "@/lib/utils";
 import { formatDate } from "date-fns";
 import { toast } from "sonner";
+import useConversationStore from "@/zustand/useConversationStore";
 
 const { Check, CheckCheck, File, Download } = icons;
 
@@ -16,6 +17,7 @@ const Document = ({
   document,
 }) => {
   const handleDowload = async () => {
+    const { conversation } = useConversationStore();
     const response = await fetch(document.url);
     const blod = await response.blob();
     zip.file(document.name, blod);
@@ -24,7 +26,7 @@ const Document = ({
       const link = document.createElement("a");
       const url = window.URL.createObjectURL(content);
       link.href = url;
-      link.download = "files.zip";
+      link.download = `${conversation.nameConversation}-document.zip`;
       link.click();
       window.URL.revokeObjectURL(url);
       toast.success("Tải xuống thành công.");

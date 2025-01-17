@@ -11,7 +11,7 @@ import {
 import icons from "@/lib/icons";
 import { UserAvatar } from ".";
 import useCurrentStore from "@/zustand/useCurrentStore";
-import stringeeConfing from "@/lib/stringeeConfig";
+// import stringeeConfing from "@/lib/stringeeConfig";
 import useCallStore from "@/zustand/useCallStore";
 
 const { Mic, MicOff, Phone, Video, VideoOff } = icons;
@@ -20,13 +20,13 @@ const AudioVideoRoom = ({ open, onOpenChange, video, data }) => {
   const [isMic, setIsMic] = useState(true);
   const [isVideo, setIsVideo] = useState(true);
   const { currentData } = useCurrentStore();
-  const { call } = stringeeConfing();
+  // const { call } = stringeeConfing();
   const { isCall } = useCallStore();
 
-  useEffect(() => {
-    if (isMic) call?.unmute();
-    else call?.mute();
-  }, [isMic]);
+  // useEffect(() => {
+  //   if (isMic) call?.unmute();
+  //   else call?.mute();
+  // }, [isMic]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

@@ -2,7 +2,6 @@ import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { getAllUsers, sendMessage } from "./actions";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -12,18 +11,28 @@ import {
   ScrollArea,
   Skeleton,
 } from "../ui";
-import { Divider, InfiniteScrollContainer, UserAvatar } from "..";
+import {
+  Divider,
+  InfiniteScrollContainer,
+  LoadingButton,
+  UserAvatar,
+} from "..";
 import icons from "@/lib/icons";
 import useDebounce from "@/hooks/useDebounce";
 import useAppStore from "@/zustand/useAppStore";
 import { toast } from "sonner";
 
-const { TriangleAlert, LoaderCircle, SendHorizontal } = icons;
+const { TriangleAlert, LoaderCircle, X, SendHorizontal } = icons;
 
 const DialogCreateConversation = ({ open, onOpenChange }) => {
   const [name, setName] = useState({ q: null });
   const [inputMessage, setInputMessage] = useState("");
-  const queriesDebounce = useDebounce(name, 800);
+  const [userConversations, setUserConversations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const queriesDebounce = useDebounce(
+    { ...name, recipients: userConversations.map((user) => user._id) },
+    800
+  );
   const queryClient = useQueryClient();
   const { isShowCreateConversation } = useAppStore();
 
@@ -44,14 +53,25 @@ const DialogCreateConversation = ({ open, onOpenChange }) => {
 
   const users = data?.pages.flatMap((page) => page.users) || [];
 
-  const handleSubmit = async (user) => {
+  const handleSubmit = async () => {
     if (inputMessage !== "") {
-      const payload = { recipientId: user._id, content: inputMessage };
-      const respone = await sendMessage(payload);
-      queryClient.invalidateQueries(["conversations"]);
-      if (respone) {
-        toast.success("Tạo phòng trò chuyện thành công.");
-        onClose();
+      setIsLoading(true);
+      try {
+        const payload = {
+          recipients: userConversations.map((user) => user._id),
+          content: inputMessage,
+        };
+        const respone = await sendMessage(payload);
+        queryClient.invalidateQueries(["conversations"]);
+        if (respone) {
+          toast.success("Tạo phòng trò chuyện thành công.");
+          onClose();
+        }
+      } catch (error) {
+        toast.error(error.mess);
+        console.error(error.mess);
+      } finally {
+        setIsLoading(false);
       }
     } else toast.warning("Vui lòng nhập tin nhắn.");
   };
@@ -59,6 +79,7 @@ const DialogCreateConversation = ({ open, onOpenChange }) => {
   const onClose = () => {
     setName({ q: null });
     setInputMessage("");
+    setUserConversations([]);
     onOpenChange(isShowCreateConversation);
   };
 
@@ -74,13 +95,53 @@ const DialogCreateConversation = ({ open, onOpenChange }) => {
             placeholder="Tên người dùng hoặc email"
             className="w-full rounded-md bg-muted"
             onChange={(e) => setName({ q: e.target.value.trim() || null })}
+            value={name.q || ""}
           />
-          <Input
-            placeholder="Nhập tin nhắn..."
-            className="w-full rounded-md bg-muted"
-            onChange={(e) => setInputMessage(e.target.value)}
-            value={inputMessage}
-          />
+          {userConversations.length > 0 && (
+            <div className="max-h-[100px]">
+              <ScrollArea className="h-full">
+                <div className="flex flex-wrap gap-2">
+                  {userConversations.map((userConversation) => (
+                    <div
+                      key={userConversation._id}
+                      className="w-fit flex items-center space-x-2 rounded-full bg-muted p-2"
+                    >
+                      <small className="cursor-default whitespace-nowrap">
+                        {userConversation.userName}
+                      </small>
+                      <X
+                        className="size-4 cursor-pointer"
+                        onClick={() =>
+                          setUserConversations((prevs) =>
+                            prevs.filter(
+                              (item) => item._id !== userConversation._id
+                            )
+                          )
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+          <div className="flex space-x-2">
+            <Input
+              placeholder="Nhập tin nhắn..."
+              className="w-full rounded-md bg-muted"
+              onChange={(e) => setInputMessage(e.target.value)}
+              value={inputMessage}
+            />
+            <LoadingButton
+              variant="ghost"
+              className={"border border-muted"}
+              loading={isLoading}
+              onClick={handleSubmit}
+              disabled={isLoading || !inputMessage.trim()}
+            >
+              <SendHorizontal className="size-5 -rotate-45 opacity-50" />
+            </LoadingButton>
+          </div>
           <Divider />
           <ScrollArea className="h-[300px]">
             {status === "pending" && (
@@ -98,7 +159,7 @@ const DialogCreateConversation = ({ open, onOpenChange }) => {
             )}
             {status === "success" && !users.length && !hasNextPage && (
               <span className="text-center text-destructive">
-                Không có thông báo nào.
+                Không có người dùng nào.
               </span>
             )}
             {status === "error" && (
@@ -117,29 +178,25 @@ const DialogCreateConversation = ({ open, onOpenChange }) => {
                 <div
                   key={idx}
                   className="flex items-center justify-between border rounded-md p-2 bg-muted hover:bg-muted-foreground cursor-pointer"
+                  onClick={() => {
+                    name.q && setName({ q: null });
+                    setUserConversations((prev) => [...prev, user]);
+                  }}
                 >
                   <div className="flex items-center space-x-2">
                     <UserAvatar
                       avatarUrl={user?.avatarUrl}
-                      displayName={user.displayName}
-                      isOnline={user.status}
+                      displayName={user?.displayName}
+                      isOnline={user?.status}
                       className="border border-primary"
                     />
                     <div className="flex flex-col">
                       <span className="text-sm font-medium">
-                        {user.displayName}
+                        {user?.displayName}
                       </span>
-                      <small>{user.userName}</small>
+                      <small>{user?.userName}</small>
                     </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="border border-primary opacity-50 hover:opacity-100 transition-all"
-                    onClick={() => handleSubmit(user)}
-                  >
-                    <SendHorizontal className="size-5 -rotate-45" />
-                  </Button>
                 </div>
               ))}
               {isFetchingNextPage && (

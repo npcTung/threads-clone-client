@@ -6,6 +6,11 @@ const useAppStore = create((set) => ({
   isNotication: true,
   isAudio: false,
   isShowSetting: false,
+  isShowSmile: false,
+  isShowEditHistory: false,
+  setIsShowEditHistory: (isShowEditHistory) =>
+    set({ isShowEditHistory: !isShowEditHistory }),
+  setIsShowSmile: (isShowSmile) => set({ isShowSmile: !isShowSmile }),
   setSortPost: (sortPost) => set({ sortPost }),
   setUnreadCount: (unreadCount) => set({ unreadCount }),
   setIsNotication: (isNotication) => set({ isNotication: !isNotication }),
@@ -19,6 +24,7 @@ const useAppStore = create((set) => ({
       isNotication: true,
       isAudio: false,
       isShowSetting: false,
+      isShowSmile: false,
     }),
 }));
 
