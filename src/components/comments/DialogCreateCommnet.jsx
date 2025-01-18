@@ -110,7 +110,10 @@ const EmojiButton = ({ addEmoji }) => {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setIsShowSmile(!isShowSmile)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsShowSmile(!isShowSmile);
+        }}
         className="opacity-50 hover:opacity-100 transition-all"
       >
         <Smile className="size-5" />
