@@ -6,7 +6,7 @@ import { ScrollArea } from "./ui";
 import useAppStore from "@/zustand/useAppStore";
 
 const EditInput = ({ editor, className }) => {
-  const { isShowSmile, setIsShowSmile } = useAppStore();
+  const { setIsShowSmile } = useAppStore();
 
   if (!editor) {
     return <div>Loading editor...</div>;
@@ -17,7 +17,7 @@ const EditInput = ({ editor, className }) => {
       <EditorContent
         editor={editor}
         className={cn("w-full", className)}
-        onClick={() => setIsShowSmile(isShowSmile)}
+        onClick={() => setIsShowSmile(false)}
       />
     </ScrollArea>
   );

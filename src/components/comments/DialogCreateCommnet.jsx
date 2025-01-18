@@ -38,7 +38,7 @@ const DialogCreateCommnet = ({ open, onOpenChange, data, postId }) => {
   const onClose = () => {
     onOpenChange();
     editor.commands.clearContent();
-    setIsShowSmile(isShowSmile);
+    setIsShowSmile(false);
   };
 
   const addEmoji = (e) => {
@@ -58,7 +58,7 @@ const DialogCreateCommnet = ({ open, onOpenChange, data, postId }) => {
         className={"max-sm:size-full md:w-[80vh] max-w-none"}
         onClick={(e) => {
           e.stopPropagation();
-          setIsShowSmile(isShowSmile);
+          setIsShowSmile(false);
         }}
       >
         <DialogHeader>
@@ -110,7 +110,7 @@ const EmojiButton = ({ addEmoji }) => {
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setIsShowSmile(isShowSmile)}
+        onClick={() => setIsShowSmile(!isShowSmile)}
         className="opacity-50 hover:opacity-100 transition-all"
       >
         <Smile className="size-5" />
